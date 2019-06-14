@@ -1,6 +1,16 @@
 # Gralloc module
 LOCAL_PATH := $(call my-dir)
 include $(LOCAL_PATH)/../common.mk
+
+include $(CLEAR_VARS)
+LOCAL_VENDOR_MODULE           := true
+LOCAL_COPY_HEADERS_TO         := $(common_header_export_path)
+LOCAL_COPY_HEADERS            := gr_device_impl.h gralloc_priv.h gr_priv_handle.h
+#Copy the headers regardless of whether gralloc is built
+include $(BUILD_COPY_HEADERS)
+
+ifneq ($(TARGET_DISABLE_DISPLAY),true)
+
 include $(CLEAR_VARS)
 
 LOCAL_MODULE                  := gralloc.$(TARGET_BOARD_PLATFORM)
@@ -100,3 +110,5 @@ LOCAL_C_INCLUDES              := $(common_includes) $(kernel_includes)
 LOCAL_SRC_FILES               := QtiAllocator.cpp service.cpp
 LOCAL_INIT_RC                 := vendor.qti.hardware.display.allocator-service.rc
 include $(BUILD_EXECUTABLE)
+
+endif
